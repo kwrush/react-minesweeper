@@ -144,8 +144,8 @@ export default class Game extends React.Component {
                     />
                 </div>
                 <footer id="footer">
-                    <p>Click tile to expose its content, right click or <span>alt+left</span> click to mark the mine</p>
-                    <p>Click emoji button {emoji['win']} to restart the game.</p>
+                    <p>Click on tile to expose its content, right click or <span>alt+left</span> click to mark the mine</p>
+                    <p>Click on emoji button {emoji['win']} to restart the game.</p>
                 </footer>
             </div>
         );
