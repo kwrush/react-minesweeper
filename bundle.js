@@ -22800,7 +22800,7 @@ var Game = function (_React$Component) {
                     _react2.default.createElement(
                         'p',
                         null,
-                        'Click tile to expose its content, right click or ',
+                        'Click on tile to expose its content, right click or ',
                         _react2.default.createElement(
                             'span',
                             null,
@@ -22811,7 +22811,7 @@ var Game = function (_React$Component) {
                     _react2.default.createElement(
                         'p',
                         null,
-                        'Click emoji button ',
+                        'Click on emoji button ',
                         _constants.emoji['win'],
                         ' to restart the game.'
                     )
@@ -25316,6 +25316,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * Check if the tiles around the given location have been cleared
+ * @param {Array} grid grid array
+ * @param {Number} r row of location
+ * @param {Number} c column of location
+ * @return true if all tiles are cleared
+ */
 function isAdjacentTilesCleared(grid, r, c) {
     var offsets = [[0, -1], [-1, -1], [-1, 0], [1, 1], [0, 1], [1, 1], [1, 0], [1, -1]];
 
@@ -25330,6 +25337,10 @@ function isAdjacentTilesCleared(grid, r, c) {
     return true;
 }
 
+/**
+ * Expose tiles in the specific array
+ * @param {Array} grid 
+ */
 function exposeAll(grid) {
     return grid.map(function (row) {
         return row.map(function (tile) {
@@ -25372,7 +25383,8 @@ var Grid = function (_React$Component) {
         value: function componentWillReceiveProps(nextProps) {
 
             if (this.props.row != nextProps.row || this.props.col != nextProps.col || nextProps.status === 'reset') {
-
+                // Recreate the grid entirely either the dimension changes or
+                // the game status is reset
                 var r = nextProps.row;
                 var c = nextProps.col;
                 var _grid = this.randomMines((0, _utils.newGrid)(r, c), nextProps.mines);
@@ -25380,12 +25392,20 @@ var Grid = function (_React$Component) {
                     grid: _grid
                 });
             } else if (nextProps.status === 'gameOver') {
+                // Otherwise we epose the mines under the hood
                 var _exposedGrid = exposeAll(this.state.grid);
                 this.setState({
                     grid: _exposedGrid
                 });
             }
         }
+
+        /**
+         * Tile click handler
+         * @param {Number} r 
+         * @param {Number} c 
+         */
+
     }, {
         key: 'exposeTile',
         value: function exposeTile(r, c) {
@@ -25393,6 +25413,7 @@ var Grid = function (_React$Component) {
 
             var _grid = this.state.grid;
 
+            // Game over if clicking on a mine
             if (_grid[r][c].hasMine) {
                 this.props.gameOver();
             } else {
@@ -25407,6 +25428,15 @@ var Grid = function (_React$Component) {
                 }
             }
         }
+
+        /**
+         * Expose the tiles with no mines around the give location
+         * @param {Array} grid 
+         * @param {Number} r 
+         * @param {Number} c 
+         * @return this Grid object
+         */
+
     }, {
         key: 'exposeAround',
         value: function exposeAround(grid, r, c) {
@@ -25426,6 +25456,13 @@ var Grid = function (_React$Component) {
 
             return this;
         }
+
+        /**
+         * Mark the given location in the grid
+         * @param {Number} r 
+         * @param {Number} c 
+         */
+
     }, {
         key: 'markTile',
         value: function markTile(r, c) {
@@ -25445,6 +25482,13 @@ var Grid = function (_React$Component) {
                 }
             }
         }
+
+        /**
+         * Check if we have marked all mines
+         * @param {Array} grid 
+         * @return true if we can win the game
+         */
+
     }, {
         key: 'checkCanWin',
         value: function checkCanWin(grid) {
@@ -25460,6 +25504,13 @@ var Grid = function (_React$Component) {
 
             return true;
         }
+
+        /**
+         * Put mines in the random location 
+         * @param {Array} grid 
+         * @param {Numbers} mines 
+         */
+
     }, {
         key: 'randomMines',
         value: function randomMines(grid, mines) {
@@ -25481,6 +25532,14 @@ var Grid = function (_React$Component) {
 
             return grid;
         }
+
+        /**
+         * Increase the minesAround property
+         * @param {Array} grid 
+         * @param {Number} r 
+         * @param {Number} c 
+         */
+
     }, {
         key: 'calcMinesInAdjacentTiles',
         value: function calcMinesInAdjacentTiles(grid, r, c) {
@@ -25580,8 +25639,10 @@ var Tile = function (_React$Component) {
         key: 'expose',
         value: function expose(event) {
             event.preventDefault();
+            // Do nothing with the tile has been exposed
             if (this.props.tile.exposed) return;
 
+            // Alt+click to mark the mine
             if (event.altKey && event.button === _constants.keyCodes.CLICK) {
                 this.mark(event);
             } else {
