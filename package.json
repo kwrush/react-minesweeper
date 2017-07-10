@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register --require ./test/helpers.js --require ./test/dom.js --recursive",
-    "build": "webpack",
+    "build": "webpack --progress -p",
     "start": "webpack-dev-server"
   },
   "keywords": [
