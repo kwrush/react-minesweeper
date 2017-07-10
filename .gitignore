@@ -50,7 +50,3 @@ Temporary Items
 
 # vscode config
 **/.vscode/
-
-# api key
-**/apiKey.js
-**/apiKey.txt
