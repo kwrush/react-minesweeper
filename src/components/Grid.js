@@ -3,37 +3,6 @@ import {within2dArray, newGrid} from '../utils';
 import Tile from './Tile';
 
 /**
- * Check if the tiles around the given location have been cleared
- * @param {Array} grid grid array
- * @param {Number} r row of location
- * @param {Number} c column of location
- * @return true if all tiles are cleared
- */
-function isAdjacentTilesCleared(grid, r, c) {
-    const offsets = [
-        [0, -1] , 
-        [-1, -1],
-        [-1, 0],
-        [1, 1],
-        [0, 1],
-        [1, 1],
-        [1, 0],
-        [1, -1]
-    ];
-
-    for (let i = 0; i < offsets.length; i++) {
-        const nr = r + offsets[i][0];
-        const nc = c + offsets[i][1];
-        if (within2dArray(grid, nr, nc) && !grid[nr][nc].hasMine && 
-            !grid[nr][nc].exposed)  {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-/**
  * Expose tiles in the specific array
  * @param {Array} grid 
  */
@@ -173,7 +142,7 @@ export default class Grid extends React.Component {
     }
 
     /**
-     * Check if we have marked all mines
+     * Check if we have exposed all non-mine cells
      * @param {Array} grid 
      * @return true if we can win the game
      */
@@ -182,7 +151,7 @@ export default class Grid extends React.Component {
             let row = grid[i];
             for (let j = 0; j < row.length; j++) {
                 let tile = row[j];
-                if (tile.hasMine && !isAdjacentTilesCleared(grid, i, j) && !tile.marked) {
+                if (!tile.hasMine && !tile.exposed) {
                     return false;
                 }
             }
