@@ -4,7 +4,7 @@
   "description": "minesweeper game based on React",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register --require ./test/helpers.js --require ./test/dom.js --recursive",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress -p",
     "start": "webpack-dev-server"
   },
@@ -13,8 +13,8 @@
     "minesweeper",
     "JavaScript"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Kai Wang",
+  "license": "ISC",
   "dependencies": {
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
