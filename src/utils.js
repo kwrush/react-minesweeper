@@ -1,4 +1,4 @@
-export function within2dArray (arr, r, c) {
+export const within2dArray = (arr, r, c) => {
     if (r < 0 || c < 0) return false;
 
     if (typeof arr === undefined || 
@@ -12,7 +12,7 @@ export function within2dArray (arr, r, c) {
     return true;
 }
 
-export function newTile (r, c) {
+export const newTile = (r, c) => {
     return {
         row: r,
         col: c,
@@ -23,7 +23,7 @@ export function newTile (r, c) {
     };
 }
 
-export function newGrid (r, c) {
+export const newGrid = (r, c) => {
     let grid = [];
     for (let i = 0; i < r; i++) {
         grid.push([]);
